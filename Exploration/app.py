@@ -90,15 +90,22 @@ app.layout = html.Div(children=[
                                      style={'textAlign': 'left'}
                                      ),
 
-                            html.Div(style={'display': 'inline-block'},
-                                     children=[dcc.Graph(
+                            html.Div(children=[dcc.Graph(
                                                      id='life-exp-vs-gdp',
                                                      figure={
                                                              'data': data,
                                                              'layout': layout
                                                              }
-                                                     )
-                                             ])
+                                                     ),
+                                                html.Button('', id='b1', style={'width':'50', 'height':'30', 'background-color':'navy',}),
+                                                html.Button('', id='b2', style={'width':'50', 'height':'30', 'background-color':'blue'}),
+                                                html.Button('', id='b3', style={'width':'50', 'height':'30', 'background-color':'green'}),
+                                                html.Button('', id='b4', style={'width':'50', 'height':'30', 'background-color':'red'}),
+                                                html.Button('', id='b5', style={'width':'50', 'height':'30', 'background-color':'orange'}),
+                                                html.Button('', id='b6', style={'width':'50', 'height':'30', 'background-color':'yellow'})
+                                             ]),
+
+
 ])
 
 #------------------------------------------------------------------------------
