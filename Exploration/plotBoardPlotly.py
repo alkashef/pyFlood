@@ -14,17 +14,17 @@ no_colors = 6
 
 board = np.zeros((size, size))
 for i in range(0, size):
-    for j in range(0, size): 
+    for j in range(0, size):
         board[i, j] = rn.randint(1, no_colors)
 
 #------------------------------------------------------------------------------
-        
+
 navy   = 'rgb(0  , 0  , 128)'
 blue   = 'rgb(30 , 144, 255)'
-green  = 'rgb( 0 , 128,   0)'
-red    = 'rgb(255,  10,  10)'
-orange = 'rgb(255, 140,   0)'
-yellow = 'rgb(255, 255,   0)'
+green  = 'rgb(0  , 128, 0  )'
+red    = 'rgb(255,  10, 10 )'
+orange = 'rgb(255, 140, 0  )'
+yellow = 'rgb(255, 255, 0  )'
 
 color_map=[[0.00, navy],
            [0.16, navy],
