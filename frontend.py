@@ -4,70 +4,24 @@ import dash_core_components as dcc # higher-level components
 import dash_html_components as html # has a component for every HTML tag
 from dash.dependencies import Input, Output, State
 import plotly.graph_objs as go
-import random as rn
 import numpy as np
+import backend as be
 
 #------------------------------------------------------------------------------
+
+size = be.size
+data = be.data
+layout = be.layout
+color_map = be.color_map
+no_colors = be.no_colors
+
+#------------------------------------------------------------------------------
+
+# To identify which button was clicked:
+    # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
+    # maral Mar 18, 2018 5:35 am
 
 app = dash.Dash()
-
-size = 18
-rn.seed(4321)
-no_colors = 6
-
-board = np.zeros((size, size))
-for i in range(0, size):
-    for j in range(0, size):
-        board[i, j] = rn.randint(1, no_colors)
-
-navy   = 'rgb(0  , 0  , 128)'
-blue   = 'rgb(30 , 144, 255)'
-green  = 'rgb(0  , 128, 0  )'
-red    = 'rgb(255,  10, 10 )'
-orange = 'rgb(255, 140, 0  )'
-yellow = 'rgb(255, 255, 0  )'
-
-color_map=[[0.00, navy],
-           [0.16, navy],
-           [0.16, blue],
-           [0.33, blue],
-           [0.33, green],
-           [0.50, green],
-           [0.50, red],
-           [0.66, red],
-           [0.66, orange],
-           [0.83, orange],
-           [0.83, yellow],
-           [1.00, yellow]]
-
-data = [go.Heatmap(z=board, colorscale=color_map, zmin=1, zmax=no_colors)]
-
-layout = go.Layout(
-    autosize=False,
-    width=500,
-    height=500,
-    margin=go.Margin(l=50, r=50, b=100, t=100, pad=4),
-    xaxis=dict(
-        autorange=True,
-        showgrid=False,
-        zeroline=False,
-        showline=False,
-        autotick=True,
-        ticks='',
-        showticklabels=False
-    ),
-    yaxis=dict(
-        autorange=True,
-        showgrid=False,
-        zeroline=False,
-        showline=False,
-        autotick=True,
-        ticks='',
-        showticklabels=False
-    )
-)
-
-#------------------------------------------------------------------------------
 
 app.layout = html.Div(children=[
                             html.H1(
@@ -82,18 +36,16 @@ app.layout = html.Div(children=[
                             html.Div(children=[dcc.Graph(
                                                      id='board',
                                                      figure={
-                                                             'data': data,
-                                                             'layout': layout
+                                                             'data': be.data,
+                                                             'layout': be.layout
                                                              }
                                                      ),
-    # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
-    # maral Mar 18, 2018 5:35 am
-                                                html.Button('1', id='b1', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'navy',}),
-                                                html.Button('2', id='b2', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'blue'}),
-                                                html.Button('3', id='b3', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'green'}),
-                                                html.Button('4', id='b4', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'red'}),
-                                                html.Button('5', id='b5', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'orange'}),
-                                                html.Button('6', id='b6', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'yellow'}),
+                                                html.Button('', id='b1', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'navy',}),
+                                                html.Button('', id='b2', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'blue'}),
+                                                html.Button('', id='b3', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'green'}),
+                                                html.Button('', id='b4', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'red'}),
+                                                html.Button('', id='b5', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'orange'}),
+                                                html.Button('', id='b6', n_clicks=0, style={'width':'50', 'height':'30', 'background-color':'yellow'}),
                                                 html.Div(id='clicked-button', children='b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 last:nan', style={'display': 'none'})
                                              ]),
 
@@ -120,8 +72,6 @@ def update_figure(clicked):
     figure = {'data': data, 'layout': layout}
 
     return figure
-
-    #return last_clicked
 
 @app.callback(
     Output('clicked-button', 'children'),
@@ -157,9 +107,6 @@ def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_cl
 
     return cur_clicks
 
-#------------------------------------------------------------------------------
-
 if __name__ == '__main__':
     app.run_server()
 
-#------------------------------------------------------------------------------
