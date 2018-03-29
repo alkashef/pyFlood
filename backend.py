@@ -1,4 +1,3 @@
-
 # py modules
 import random as rn
 import numpy as np
@@ -8,10 +7,10 @@ import settings
 import colors
 from backend_helper import plot_grid
 
+
 # ------------------------------------------------------------------------------
 
 def one_color_grid(color):
-
     size = settings.board_size
     no_colors = colors.no_colors
     color_map = colors.color_map
@@ -26,10 +25,10 @@ def one_color_grid(color):
 
     return data, layout
 
+
 # ------------------------------------------------------------------------------
 
 def initialize_grid(size, no_colors, color_map):
-
     rn.seed(4321)
 
     board = np.zeros((size, size))

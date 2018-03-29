@@ -1,4 +1,3 @@
-
 # dash modules
 import dash
 import dash_core_components as dcc  # higher-level components
@@ -10,10 +9,12 @@ import backend
 import settings
 import colors
 
+
 # ------------------------------------------------------------------------------
 
 def button_style(color):
     return {'width': '50', 'height': '30', 'background-color': color}
+
 
 # ------------------------------------------------------------------------------
 
@@ -40,15 +41,19 @@ app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                                  ]),
                        ])
 
+
 @app.callback(
     Output(component_id='board', component_property='figure'),
     [Input(component_id='clicked-button', component_property='children')]
 )
+
+
 def update_figure(clicked):
     lst_clk = clicked[-1:]
     data, layout = backend.one_color_grid(lst_clk)
     figure = {'data': data, 'layout': layout}
     return figure
+
 
 @app.callback(
     Output('clicked-button', 'children'),
@@ -60,6 +65,7 @@ def update_figure(clicked):
      Input('b6', 'n_clicks')],
     [State('clicked-button', 'children')]
 )
+
 
 def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_clicks, prv_clicks):
     prv_clicks = dict([i.split(':') for i in prv_clicks.split(' ')])
@@ -84,6 +90,7 @@ def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_cl
                                                                       b6_clicks,
                                                                       last_click)
     return cur_clicks
+
 
 if __name__ == '__main__':
     app.run_server()
