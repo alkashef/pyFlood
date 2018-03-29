@@ -1,17 +1,16 @@
 
-import plotly.graph_objs as go
+# py modules
 import random as rn
 import numpy as np
+
+# game modules
 import settings
 import colors
+from backend_helper import plot_grid
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-rn.seed(4321)
-
-#------------------------------------------------------------------------------
-
-def plotGrid(color):
+def one_color_grid(color):
 
     size = settings.board_size
     no_colors = colors.no_colors
@@ -23,75 +22,22 @@ def plotGrid(color):
         for j in range(0, size):
             board[i, j] = color
 
-    layout = go.Layout(
-        autosize = False,
-        width = 500,
-        height = 500,
-        margin = go.Margin(l=50, r=50, b=100, t=100, pad=4),
-        xaxis = dict(
-            autorange = True,
-            showgrid = False,
-            zeroline = False,
-            showline = False,
-            autotick = True,
-            ticks = '',
-            showticklabels = False
-        ),
-        yaxis = dict(
-            autorange = True,
-            showgrid = False,
-            zeroline = False,
-            showline = False,
-            autotick = True,
-            ticks = '',
-            showticklabels = False
-        )
-    )
-
-    data = [go.Heatmap(z = board,
-                       colorscale = color_map,
-                       zmin = 1,
-                       zmax = no_colors)]
+    data, layout = plot_grid(board, color_map, no_colors)
 
     return data, layout
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-def initializeGrid(size, no_colors, color_map):
+def initialize_grid(size, no_colors, color_map):
+
+    rn.seed(4321)
 
     board = np.zeros((size, size))
+
     for i in range(0, size):
         for j in range(0, size):
             board[i, j] = rn.randint(1, no_colors)
 
-    layout = go.Layout(
-        autosize = False,
-        width = 500,
-        height = 500,
-        margin = go.Margin(l=50, r=50, b=100, t=100, pad=4),
-        xaxis = dict(
-            autorange = True,
-            showgrid = False,
-            zeroline = False,
-            showline = False,
-            autotick = True,
-            ticks = '',
-            showticklabels = False
-        ),
-        yaxis = dict(
-            autorange = True,
-            showgrid = False,
-            zeroline = False,
-            showline = False,
-            autotick = True,
-            ticks = '',
-            showticklabels = False
-        )
-    )
-
-    data = [go.Heatmap(z = board,
-                       colorscale = color_map,
-                       zmin = 1,
-                       zmax = no_colors)]
+    data, layout = plot_grid(board, color_map, no_colors)
 
     return data, layout
