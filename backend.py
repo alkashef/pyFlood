@@ -24,7 +24,7 @@ def flood_grid(color):
 # ------------------------------------------------------------------------------
 
 def initialize_grid(size, no_colors):
-    rn.seed(4321)
+    #rn.seed(4321)
 
     grid = np.zeros((size, size))
 

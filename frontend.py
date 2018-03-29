@@ -33,12 +33,10 @@ app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                                  ]),
                        ])
 
-
 @app.callback(
     Output(component_id='grid', component_property='figure'),
     [Input(component_id='clicked-button', component_property='children')]
 )
-
 
 def play(clicked):
     global grid, initial_grid
@@ -52,7 +50,6 @@ def play(clicked):
     figure = {'data': data, 'layout': layout}
     return figure
 
-
 @app.callback(
     Output('clicked-button', 'children'),
     [Input('b1', 'n_clicks'),
@@ -63,7 +60,6 @@ def play(clicked):
      Input('b6', 'n_clicks')],
     [State('clicked-button', 'children')]
 )
-
 
 def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_clicks, prv_clicks):
     prv_clicks = dict([i.split(':') for i in prv_clicks.split(' ')])
