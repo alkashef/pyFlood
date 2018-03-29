@@ -19,7 +19,7 @@ app = dash.Dash()
 
 app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                        html.Div('A Color Flood Game in Python', style={'textAlign': 'left'}),
-                       html.Div([dcc.Graph(id='grid', figure={'data': data, 'layout': layout}),
+                       html.Div([dcc.Graph(id='grid', figure={'data': data, 'layout': layout}, config={'displayModeBar': False}),
                                  # To identify which button was clicked:
                                  # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
                                  # [maral] Mar 18, 2018 5:35 am

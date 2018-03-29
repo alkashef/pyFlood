@@ -1,6 +1,8 @@
-def button_style(color):
-    return {'width': '50', 'height': '30', 'background-color': color}
 
+def button_style(color):
+    return {'width': '50', 'height': '30', 'marginRight':'20', 'background-color': color}
+
+# ------------------------------------------------------------------------------
 
 def represents_int(string):
     try:

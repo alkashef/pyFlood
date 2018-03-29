@@ -41,9 +41,9 @@ def plot_grid(grid, color_map, no_colors):
     layout = go.Layout(
         showlegend=False,
         autosize=False,
-        width=500,
-        height=500,
-        margin=go.Margin(l=50, r=50, b=100, t=100, pad=4),
+        width=400,
+        height=400,
+        margin=go.Margin(l=0, r=0, b=40, t=40, pad=0),
         xaxis=dict(
             autorange=True,
             showgrid=False,
