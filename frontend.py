@@ -10,23 +10,29 @@ import settings
 import colors
 
 
-# ------------------------------------------------------------------------------
-
 def button_style(color):
     return {'width': '50', 'height': '30', 'background-color': color}
 
 
-# ------------------------------------------------------------------------------
+def represents_int(string):
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
 
-init_data, init_layout = backend.initialize_grid(settings.board_size,
-                                                 colors.no_colors,
-                                                 colors.color_map)
+
+grid = backend.initialize_grid(settings.grid_size, colors.no_colors)
+
+initial_grid = grid
+
+data, layout = backend.plot_grid(grid, colors.color_map, colors.no_colors)
 
 app = dash.Dash()
 
 app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                        html.Div('A Color Flood Game in Python', style={'textAlign': 'left'}),
-                       html.Div([dcc.Graph(id='board', figure={'data': init_data, 'layout': init_layout}),
+                       html.Div([dcc.Graph(id='grid', figure={'data': data, 'layout': layout}),
                                  # To identify which button was clicked:
                                  # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
                                  # [maral] Mar 18, 2018 5:35 am
@@ -36,21 +42,26 @@ app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                                  html.Button('', id='b4', n_clicks=0, style=button_style(colors.color_dict['red'])),
                                  html.Button('', id='b5', n_clicks=0, style=button_style(colors.color_dict['orange'])),
                                  html.Button('', id='b6', n_clicks=0, style=button_style(colors.color_dict['yellow'])),
-                                 html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 last:nan', id='clicked-button',
-                                          style={'display': 'none'})
+                                 html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 last:nan', id='clicked-button', style={'display': 'none'})
                                  ]),
                        ])
 
 
 @app.callback(
-    Output(component_id='board', component_property='figure'),
+    Output(component_id='grid', component_property='figure'),
     [Input(component_id='clicked-button', component_property='children')]
 )
 
 
-def update_figure(clicked):
-    lst_clk = clicked[-1:]
-    data, layout = backend.one_color_grid(lst_clk)
+def play(clicked):
+    global grid, initial_grid
+    clicked_color = clicked[-1:]
+    if represents_int(clicked_color):
+        if not backend.game_over(grid):
+            grid = backend.flood_grid(int(clicked_color))
+    else:
+        grid = initial_grid
+    data, layout = backend.plot_grid(grid, colors.color_map, colors.no_colors)
     figure = {'data': data, 'layout': layout}
     return figure
 

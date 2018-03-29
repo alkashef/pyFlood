@@ -1,42 +1,80 @@
 # py modules
 import random as rn
 import numpy as np
+from plotly import graph_objs as go
 
 # game modules
 import settings
 import colors
-from backend_helper import plot_grid
 
 
-# ------------------------------------------------------------------------------
+def flood_grid(color):
+    size = settings.grid_size
 
-def one_color_grid(color):
-    size = settings.board_size
-    no_colors = colors.no_colors
-    color_map = colors.color_map
-
-    board = np.zeros((size, size))
+    grid = np.zeros((size, size))
 
     for i in range(0, size):
         for j in range(0, size):
-            board[i, j] = color
+            grid[i, j] = color
 
-    data, layout = plot_grid(board, color_map, no_colors)
+    grid[size-1, size-1] = 6
 
-    return data, layout
+    return grid
 
 
-# ------------------------------------------------------------------------------
-
-def initialize_grid(size, no_colors, color_map):
+def initialize_grid(size, no_colors):
     rn.seed(4321)
 
-    board = np.zeros((size, size))
+    grid = np.zeros((size, size))
 
     for i in range(0, size):
         for j in range(0, size):
-            board[i, j] = rn.randint(1, no_colors)
+            grid[i, j] = rn.randint(1, no_colors)
 
-    data, layout = plot_grid(board, color_map, no_colors)
+    return grid
+
+
+def plot_grid(grid, color_map, no_colors):
+
+    layout = go.Layout(
+        showlegend=False,
+        autosize=False,
+        width=500,
+        height=500,
+        margin=go.Margin(l=50, r=50, b=100, t=100, pad=4),
+        xaxis=dict(
+            autorange=True,
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            autotick=True,
+            ticks='',
+            showticklabels=False
+        ),
+        yaxis=dict(
+            autorange=True,
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            autotick=True,
+            ticks='',
+            showticklabels=False
+        )
+    )
+
+    data = [go.Heatmap(z=grid,
+                       colorscale=color_map,
+                       zmin=1,
+                       zmax=no_colors,
+                       showscale=False)]
 
     return data, layout
+
+
+def game_over(grid):
+    size = settings.grid_size
+    for i in range(0, size):
+        for j in range(0, size):
+            if grid[i, j] != grid[1, 1]:
+                return False
+    return True

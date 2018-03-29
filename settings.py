@@ -1,2 +1,2 @@
 
-board_size = 18
+grid_size = 18
