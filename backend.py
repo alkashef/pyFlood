@@ -5,8 +5,8 @@ from plotly import graph_objs as go
 
 # game modules
 import settings
-import colors
 
+# ------------------------------------------------------------------------------
 
 def flood_grid(color):
     size = settings.grid_size
@@ -21,6 +21,7 @@ def flood_grid(color):
 
     return grid
 
+# ------------------------------------------------------------------------------
 
 def initialize_grid(size, no_colors):
     rn.seed(4321)
@@ -33,6 +34,7 @@ def initialize_grid(size, no_colors):
 
     return grid
 
+# ------------------------------------------------------------------------------
 
 def plot_grid(grid, color_map, no_colors):
 
@@ -70,6 +72,7 @@ def plot_grid(grid, color_map, no_colors):
 
     return data, layout
 
+# ------------------------------------------------------------------------------
 
 def game_over(grid):
     size = settings.grid_size
@@ -79,11 +82,12 @@ def game_over(grid):
                 return False
     return True
 
+# ------------------------------------------------------------------------------
 
 def start_game(grid_size, no_colors, color_map):
 
-    grid = backend.initialize_grid(grid_size, no_colors)
+    grid = initialize_grid(grid_size, no_colors)
 
-    data, layout = backend.plot_grid(grid, color_map, no_colors)
+    data, layout = plot_grid(grid, color_map, no_colors)
 
     return grid, data, layout

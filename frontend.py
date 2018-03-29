@@ -8,18 +8,9 @@ from dash.dependencies import Input, Output, State
 import backend
 import settings
 import colors
+from frontend_helper import button_style, represents_int
 
-
-def button_style(color):
-    return {'width': '50', 'height': '30', 'background-color': color}
-
-def represents_int(string):
-    try:
-        int(string)
-        return True
-    except ValueError:
-        return False
-
+# ------------------------------------------------------------------------------
 
 grid, data, layout = backend.start_game(settings.grid_size, colors.no_colors, colors.color_map)
 initial_grid = grid
@@ -98,6 +89,7 @@ def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_cl
                                                                       last_click)
     return cur_clicks
 
+# ------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app.run_server()
