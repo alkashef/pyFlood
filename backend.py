@@ -78,3 +78,12 @@ def game_over(grid):
             if grid[i, j] != grid[1, 1]:
                 return False
     return True
+
+
+def start_game(grid_size, no_colors, color_map):
+
+    grid = backend.initialize_grid(grid_size, no_colors)
+
+    data, layout = backend.plot_grid(grid, color_map, no_colors)
+
+    return grid, data, layout

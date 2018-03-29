@@ -13,7 +13,6 @@ import colors
 def button_style(color):
     return {'width': '50', 'height': '30', 'background-color': color}
 
-
 def represents_int(string):
     try:
         int(string)
@@ -22,11 +21,8 @@ def represents_int(string):
         return False
 
 
-grid = backend.initialize_grid(settings.grid_size, colors.no_colors)
-
+grid, data, layout = backend.start_game(settings.grid_size, colors.no_colors, colors.color_map)
 initial_grid = grid
-
-data, layout = backend.plot_grid(grid, colors.color_map, colors.no_colors)
 
 app = dash.Dash()
 
