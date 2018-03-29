@@ -1,6 +1,9 @@
 
 def button_style(color):
-    return {'width': '50', 'height': '30', 'marginRight':'20', 'background-color': color}
+    return {'width': '50',
+            'height': '30',
+            'marginRight':'20',
+            'background-color': color}
 
 # ------------------------------------------------------------------------------
 

@@ -12,14 +12,14 @@ from frontend_helper import button_style, represents_int
 
 # ------------------------------------------------------------------------------
 
-grid, data, layout = backend.start_game(settings.grid_size, colors.no_colors, colors.color_map)
+grid, figure = backend.start_game(settings.grid_size, colors.no_colors, colors.color_map)
 initial_grid = grid
 
 app = dash.Dash()
 
 app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                        html.Div('A Color Flood Game in Python', style={'textAlign': 'left'}),
-                       html.Div([dcc.Graph(id='grid', figure={'data': data, 'layout': layout}, config={'displayModeBar': False}),
+                       html.Div([dcc.Graph(id='grid', figure=figure, config={'displayModeBar': False}),
                                  # To identify which button was clicked:
                                  # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
                                  # [maral] Mar 18, 2018 5:35 am
@@ -46,9 +46,7 @@ def play(clicked):
             grid = backend.flood_grid(int(clicked_color))
     else:
         grid = initial_grid
-    data, layout = backend.plot_grid(grid, colors.color_map, colors.no_colors)
-    figure = {'data': data, 'layout': layout}
-    return figure
+    return backend.plot_grid(grid, colors.color_map, colors.no_colors)
 
 @app.callback(
     Output('clicked-button', 'children'),

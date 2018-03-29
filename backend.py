@@ -70,7 +70,9 @@ def plot_grid(grid, color_map, no_colors):
                        zmax=no_colors,
                        showscale=False)]
 
-    return data, layout
+    figure = {'data': data, 'layout': layout}
+
+    return figure
 
 # ------------------------------------------------------------------------------
 
@@ -88,6 +90,6 @@ def start_game(grid_size, no_colors, color_map):
 
     grid = initialize_grid(grid_size, no_colors)
 
-    data, layout = plot_grid(grid, color_map, no_colors)
+    figure = plot_grid(grid, color_map, no_colors)
 
-    return grid, data, layout
+    return grid, figure
