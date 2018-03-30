@@ -8,7 +8,57 @@ import settings
 
 # ------------------------------------------------------------------------------
 
-def flood_grid(color):
+def get_neighbours(grid, cell):
+
+    cell_neighbours = np.zeros((0, 2))
+
+    if cell[0] > 0:
+        cell_neighbours = np.vstack([cell_neighbours, [cell[0] - 1, cell[1]]])
+
+    if cell[1] > 0:
+        cell_neighbours = np.vstack([cell_neighbours, [cell[0], cell[1] - 1]])
+
+    if cell[1] < grid.shape[1] - 1:
+        cell_neighbours = np.vstack([cell_neighbours, [cell[0], cell[1] + 1]])
+
+    if cell[0] < grid.shape[0] - 1:
+        cell_neighbours = np.vstack([cell_neighbours, [cell[0] + 1, cell[1]]])
+
+    return cell_neighbours
+
+# ------------------------------------------------------------------------------
+
+def flood_grid(grid, target_color, chosen_color, cell):
+
+    # Source: http://en.wikipedia.org/wiki/Flood_fill
+    #         Stack-based recursive implementation (Four-way)
+
+    # targetColor    = grid(1, 1)
+    cell_color = grid[cell[0], cell[1]]
+    cell_neighbours = get_neighbours(grid, cell)
+
+    # 1. If target-color is equal to replacement-color, return.
+    if chosen_color == target_color:
+        return
+
+    # 2. If the color of cell is not equal to target-color, return.
+    if cell_color != target_color:
+        return
+
+    # 3. Set the color of node to replacement-color.
+    grid[cell[0], cell[1]] = chosen_color
+
+    # 4. Perform Flood-fill for all neighbours.
+    #for n in range(1, cell_neighbours.shape[0] + 1):
+    for n in range(1, cell_neighbours[0] + 1):
+        #grid = flood_grid(grid, target_color, chosen_color, cell_neighbours[n,:])
+        grid = flood_grid(grid, target_color, chosen_color, cell_neighbours[n])
+
+    return grid
+
+# ------------------------------------------------------------------------------
+
+def flood_grid_old(color):
     size = settings.grid_size
 
     grid = np.zeros((size, size))
@@ -25,13 +75,10 @@ def flood_grid(color):
 
 def initialize_grid(size, no_colors):
     #rn.seed(4321)
-
     grid = np.zeros((size, size))
-
     for i in range(0, size):
         for j in range(0, size):
             grid[i, j] = rn.randint(1, no_colors)
-
     return grid
 
 # ------------------------------------------------------------------------------
@@ -87,9 +134,6 @@ def game_over(grid):
 # ------------------------------------------------------------------------------
 
 def start_game(grid_size, no_colors, color_map):
-
     grid = initialize_grid(grid_size, no_colors)
-
     figure = plot_grid(grid, color_map, no_colors)
-
     return grid, figure

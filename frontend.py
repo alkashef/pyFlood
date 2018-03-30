@@ -43,7 +43,8 @@ def play(clicked):
     clicked_color = clicked[-1:]
     if represents_int(clicked_color):
         if not backend.game_over(grid):
-            grid = backend.flood_grid(int(clicked_color))
+            #grid = backend.flood_grid_old(int(clicked_color))
+            grid = backend.flood_grid(grid, grid[1, 1], int(clicked_color), [1, 1])
     else:
         grid = initial_grid
     return backend.plot_grid(grid, colors.color_map, colors.no_colors)
