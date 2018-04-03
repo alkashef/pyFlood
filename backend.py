@@ -58,19 +58,6 @@ def flood_grid(grid, target_color, chosen_color, cell):
 
 # ------------------------------------------------------------------------------
 
-def flood_grid_old(color):
-    size = settings.grid_size
-    grid = np.zeros((size, size))
-    for i in range(0, size):
-        for j in range(0, size):
-            grid[i, j] = color
-
-    grid[size-1, size-1] = 6
-
-    return grid
-
-# ------------------------------------------------------------------------------
-
 def initialize_grid(size, no_colors):
     rn.seed(4321)
     grid = np.zeros((size, size))
