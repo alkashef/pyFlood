@@ -3,9 +3,6 @@ import random as rn
 import numpy as np
 from plotly import graph_objs as go
 
-# game modules
-import settings
-
 # ------------------------------------------------------------------------------
 
 def get_neighbours(grid, cell):
@@ -86,7 +83,7 @@ def plot_grid(grid, color_map, no_colors):
             showticklabels=False
         ),
         yaxis=dict(
-            autorange=True,
+            autorange='reversed', # https://github.com/plotly/plotly.py/issues/413
             showgrid=False,
             zeroline=False,
             showline=False,

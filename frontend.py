@@ -5,9 +5,9 @@ import dash_html_components as html  # has a component for every HTML tag
 from dash.dependencies import Input, Output, State
 
 # game modules
-from backend import start_game, game_over, flood_grid, plot_grid
 import settings
 import colors
+from backend import start_game, game_over, flood_grid, plot_grid
 from frontend_helper import button_style, represents_int
 
 # ------------------------------------------------------------------------------
