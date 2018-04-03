@@ -33,25 +33,25 @@ def flood_grid(grid, target_color, chosen_color, cell):
     # Source: http://en.wikipedia.org/wiki/Flood_fill
     #         Stack-based recursive implementation (Four-way)
 
-    # targetColor    = grid(1, 1)
-    cell_color = grid[cell[0], cell[1]]
+    original_grid = grid
+
+    #target_color = grid[0, 0]
+    cell_color = grid[int(cell[0]), int(cell[1])]
     cell_neighbours = get_neighbours(grid, cell)
 
     # 1. If target-color is equal to replacement-color, return.
     if chosen_color == target_color:
-        return
+        return original_grid
 
     # 2. If the color of cell is not equal to target-color, return.
     if cell_color != target_color:
-        return
+        return original_grid
 
     # 3. Set the color of node to replacement-color.
-    grid[cell[0], cell[1]] = chosen_color
+    grid[int(cell[0]), int(cell[1])] = chosen_color
 
     # 4. Perform Flood-fill for all neighbours.
-    #for n in range(1, cell_neighbours.shape[0] + 1):
-    for n in range(1, cell_neighbours[0] + 1):
-        #grid = flood_grid(grid, target_color, chosen_color, cell_neighbours[n,:])
+    for n in range(cell_neighbours.shape[0]):
         grid = flood_grid(grid, target_color, chosen_color, cell_neighbours[n])
 
     return grid
@@ -60,9 +60,7 @@ def flood_grid(grid, target_color, chosen_color, cell):
 
 def flood_grid_old(color):
     size = settings.grid_size
-
     grid = np.zeros((size, size))
-
     for i in range(0, size):
         for j in range(0, size):
             grid[i, j] = color
@@ -74,7 +72,7 @@ def flood_grid_old(color):
 # ------------------------------------------------------------------------------
 
 def initialize_grid(size, no_colors):
-    #rn.seed(4321)
+    rn.seed(4321)
     grid = np.zeros((size, size))
     for i in range(0, size):
         for j in range(0, size):
@@ -124,10 +122,9 @@ def plot_grid(grid, color_map, no_colors):
 # ------------------------------------------------------------------------------
 
 def game_over(grid):
-    size = settings.grid_size
-    for i in range(0, size):
-        for j in range(0, size):
-            if grid[i, j] != grid[1, 1]:
+    for r in range(grid.shape[0]):
+        for c in range(grid.shape[1]):
+            if grid[r, c] != grid[0, 0]:
                 return False
     return True
 

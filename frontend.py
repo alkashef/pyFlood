@@ -5,14 +5,14 @@ import dash_html_components as html  # has a component for every HTML tag
 from dash.dependencies import Input, Output, State
 
 # game modules
-import backend
+from backend import start_game, game_over, flood_grid, plot_grid
 import settings
 import colors
 from frontend_helper import button_style, represents_int
 
 # ------------------------------------------------------------------------------
 
-grid, figure = backend.start_game(settings.grid_size, colors.no_colors, colors.color_map)
+grid, figure = start_game(settings.grid_size, colors.no_colors, colors.color_map)
 initial_grid = grid
 
 app = dash.Dash()
@@ -42,12 +42,11 @@ def play(clicked):
     global grid, initial_grid
     clicked_color = clicked[-1:]
     if represents_int(clicked_color):
-        if not backend.game_over(grid):
-            #grid = backend.flood_grid_old(int(clicked_color))
-            grid = backend.flood_grid(grid, grid[1, 1], int(clicked_color), [1, 1])
+        if not game_over(grid):
+            grid = flood_grid(grid, grid[0, 0], int(clicked_color), [0, 0])
     else:
         grid = initial_grid
-    return backend.plot_grid(grid, colors.color_map, colors.no_colors)
+    return plot_grid(grid, colors.color_map, colors.no_colors)
 
 @app.callback(
     Output('clicked-button', 'children'),
