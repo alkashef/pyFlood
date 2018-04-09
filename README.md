@@ -4,8 +4,8 @@
 This is a Python implementation of the color flood game. 
 
 The aim of the game is to fill (flood) the entire board with a single color in the 
-minimum number of step. In each step, the player selects a color from the template 
-of 6 colors to flood the board. The player iterates until all the cells in the board 
+minimum number of steps. In each step, the player selects a color from 6 colors to 
+flood the board. The player iterates until all the cells in the board 
 have a single color. 
 
 The flooding function implements the *stack-based recursive (four-way)* algorithm  described 
@@ -47,7 +47,10 @@ The `play()` function holds the main game logic.
 
 1. Add a step counter.
 2. Add end-of-game/reset-game mechanism (e.g. browser refresh).
-2. Implement an automatic player using reinforcement learning.
+3. Implement a dummy automatic player (i.e. random color select).
+4. Implement an automatic player using reinforcement learning.
+5. Implement an API for others to plug-in their automatic player.
+6. Deploy the app (Dockers?) 
 
 # Contributors
 
