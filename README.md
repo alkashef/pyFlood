@@ -1,4 +1,3 @@
-
 # pyFlood
 
 This is a Python implementation of the color flood game. 
@@ -43,14 +42,14 @@ The `play()` function holds the main game logic.
 1. Run the `frontend.py` script: `C:\ProgramData\Anaconda3\python.exe frontend.py`
 2. Once the Python prompt returns with `Running on http://127.0.0.1:8050/`, open the returned URL in the browser and start playing.
 
-# Future Work
+# To Do
 
-1. Add a step counter.
-2. Add end-of-game/reset-game mechanism (e.g. browser refresh).
-3. Implement a dummy automatic player (i.e. random color select).
-4. Implement an automatic player using reinforcement learning.
-5. Implement an API for others to plug-in their automatic player.
-6. Deploy the app (Dockers?) 
+- Add a step counter.
+- Add end-of-game/reset-game mechanism (e.g. browser refresh).
+- Implement a dummy automatic player (i.e. random color select).
+- Implement an automatic player using reinforcement learning.
+- Implement an API for others to plug-in their automatic player.
+- Deploy the app (Dockers?) 
 
 # Contributors
 
