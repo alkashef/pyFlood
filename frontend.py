@@ -19,6 +19,8 @@ app = dash.Dash()
 
 app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                        html.Div('select a color to flood the entire board with a single color in the minimum number of steps', style=subtitle_style()),
+                       html.Div([html.Button('Reset', id='b7', n_clicks=0, style=reset_style()),
+                                 html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 last:nan', id='clicked-button', style={'display': 'none'})]),
                        html.Div([dcc.Graph(id='grid-component', figure=figure, config={'displayModeBar': False})]),
                        # To identify which button was clicked:
                        # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
@@ -28,9 +30,7 @@ app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                                  html.Button('', id='b3', n_clicks=0, style=color_button_style(colors.color_dict['green'])),
                                  html.Button('', id='b4', n_clicks=0, style=color_button_style(colors.color_dict['red'])),
                                  html.Button('', id='b5', n_clicks=0, style=color_button_style(colors.color_dict['orange'])),
-                                 html.Button('', id='b6', n_clicks=0, style=color_button_style(colors.color_dict['yellow']))]),
-                       html.Div([html.Button('Reset', id='b7', n_clicks=0, style=reset_style()),
-                                 html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 last:nan', id='clicked-button', style={'display': 'none'})])
+                                 html.Button('', id='b6', n_clicks=0, style=color_button_style(colors.color_dict['yellow']))])
                        ])
 
 app.title = 'pyFlood'
