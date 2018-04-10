@@ -56,7 +56,7 @@ def flood_grid(grid, target_color, chosen_color, cell):
 # ------------------------------------------------------------------------------
 
 def initialize_grid(size, no_colors):
-    rn.seed(4321)
+    #rn.seed(4321)
     grid = np.zeros((size, size))
     for i in range(0, size):
         for j in range(0, size):
@@ -72,7 +72,7 @@ def plot_grid(grid, color_map, no_colors):
         autosize=False,
         width=400,
         height=400,
-        margin=go.Margin(l=0, r=0, b=40, t=40, pad=0),
+        margin=go.Margin(l=0, r=0, b=0, t=0, pad=0),
         xaxis=dict(
             autorange=True,
             showgrid=False,
