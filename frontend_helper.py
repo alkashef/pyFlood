@@ -25,9 +25,3 @@ def reset_style():
 
 # ------------------------------------------------------------------------------
 
-def represents_int(string):
-    try:
-        int(string)
-        return True
-    except ValueError:
-        return False

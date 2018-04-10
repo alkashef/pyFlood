@@ -65,6 +65,22 @@ def initialize_grid(size, no_colors):
 
 # ------------------------------------------------------------------------------
 
+def reset(string):
+    if represents_int(string):
+        if int(string) == 7:
+            return True
+    return False
+
+# ------------------------------------------------------------------------------
+
+def color_button(string):
+    if represents_int(string):
+        if int(string) < 7:
+            return True
+    return False
+
+# ------------------------------------------------------------------------------
+
 def plot_grid(grid, color_map, no_colors):
 
     layout = go.Layout(
@@ -118,3 +134,12 @@ def start_game(grid_size, no_colors, color_map):
     grid = initialize_grid(grid_size, no_colors)
     figure = plot_grid(grid, color_map, no_colors)
     return grid, figure
+
+# ------------------------------------------------------------------------------
+
+def represents_int(string):
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False

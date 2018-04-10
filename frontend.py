@@ -7,8 +7,8 @@ from dash.dependencies import Input, Output, State
 # game modules
 import settings
 import colors
-from backend import start_game, game_over, flood_grid, plot_grid, initialize_grid
-from frontend_helper import color_button_style, represents_int, reset_style, subtitle_style
+from backend import start_game, game_over, flood_grid, plot_grid, reset, color_button
+from frontend_helper import color_button_style, reset_style, subtitle_style
 
 # ------------------------------------------------------------------------------
 
@@ -41,15 +41,19 @@ app.title = 'pyFlood'
 )
 
 def play(clicked):
+
     global grid, initial_grid
-    clicked_color = clicked[-1:]
-    if represents_int(clicked_color):
-        if not game_over(grid):
-            grid = flood_grid(grid, grid[0, 0], int(clicked_color), [0, 0])
-        if int(clicked_color) == 7:
-            grid, dummy_fig = start_game(settings.grid_size, colors.no_colors, colors.color_map)
+
+    clicked_button = clicked[-1:]
+
+    if reset(clicked_button):
+        grid, dummy_fig = start_game(settings.grid_size, colors.no_colors, colors.color_map)
     else:
-        grid = initial_grid
+        if color_button(clicked_button) and not game_over(grid):
+                grid = flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
+        else:
+            grid = initial_grid
+
     return plot_grid(grid, colors.color_map, colors.no_colors)
 
 @app.callback(
