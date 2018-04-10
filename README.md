@@ -44,7 +44,6 @@ The `play()` function holds the main game logic.
 
 # To Do
 
-- Add a step counter.
 - Implement a dummy automatic player (i.e. random color select).
 - Implement an automatic player using reinforcement learning.
 - Implement an API for others to plug-in their automatic player.

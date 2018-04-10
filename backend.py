@@ -143,3 +143,10 @@ def represents_int(string):
         return True
     except ValueError:
         return False
+
+# ------------------------------------------------------------------------------
+
+def same_color(grid, chosen_color):
+    if int(chosen_color) == grid[0, 0]:
+        return True
+    return False

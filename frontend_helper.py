@@ -15,13 +15,26 @@ def subtitle_style():
 
 # ------------------------------------------------------------------------------
 
+def counter_style():
+    return {'font-size': '110%',
+            'display':'inline-block'}
+
+# ------------------------------------------------------------------------------
+
+def above_grid_style():
+    return {'width':'400',
+            'margin': '20px 0px 30px 0'}
+
+# ------------------------------------------------------------------------------
+
 def reset_style():
     return {'width': '70',
             'height': '30',
             'color': 'white',
             'background-color': 'black',
-            'margin': '20px 0px 20px 0',
-            'font-size': '110%'}
+            'margin': '0px 0px 0px 0px',
+            'font-size': '110%',
+            'display': 'inline-block',
+            'float': 'right'}
 
 # ------------------------------------------------------------------------------
-
