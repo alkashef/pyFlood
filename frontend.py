@@ -7,8 +7,21 @@ from dash.dependencies import Input, Output, State
 # game modules
 import settings
 import colors
-from backend import start_game, game_over, flood_grid, plot_grid, reset, color_button, same_color
-from frontend_helper import color_button_style, reset_style, subtitle_style, counter_style, above_grid_style
+from backend import start_game, \
+                    game_over, \
+                    flood_grid, \
+                    plot_grid, \
+                    reset, \
+                    color_button, \
+                    same_color
+from frontend_helper import color_button_style, \
+                            reset_style, \
+                            subtitle_style, \
+                            counter_style, \
+                            above_grid_style, \
+                            header_style, \
+                            app_name, \
+                            subtitle_text
 
 # ------------------------------------------------------------------------------
 
@@ -20,9 +33,9 @@ step_counter = 0
 
 app = dash.Dash()
 
-app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
-                       html.Div('select a color to flood the entire board with a single color in the minimum number of steps', style=subtitle_style()),
-                       html.Div([html.Div('[steps]', id='step-counter', style=counter_style()),
+app.layout = html.Div([html.H1('pyFlood', style=header_style()),
+                       html.Div(subtitle_text, style=subtitle_style()),
+                       html.Div([html.Div('', id='step-counter', style=counter_style()),
                                  html.Button('Reset', id='b7', n_clicks=0, style=reset_style())],
                                 style=above_grid_style()),
                        html.Div([dcc.Graph(id='grid-component', figure=figure, config={'displayModeBar': False})]),
@@ -38,7 +51,7 @@ app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                        html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 last:nan', id='clicked-button', style={'display': 'none'})
                        ])
 
-app.title = 'pyFlood'
+app.title = app_name
 
 # ------------------------------------------------------------------------------
 
@@ -67,15 +80,15 @@ def play(clicked):
 # ------------------------------------------------------------------------------
 
 @app.callback(
-    Output('clicked-button', 'children'),
-    [Input('b1', 'n_clicks'),
-     Input('b2', 'n_clicks'),
-     Input('b3', 'n_clicks'),
-     Input('b4', 'n_clicks'),
-     Input('b5', 'n_clicks'),
-     Input('b6', 'n_clicks'),
-     Input('b7', 'n_clicks')],
-    [State('clicked-button', 'children')]
+    Output(component_id='clicked-button', component_property='children'),
+    [Input(component_id='b1', component_property='n_clicks'),
+     Input(component_id='b2', component_property='n_clicks'),
+     Input(component_id='b3', component_property='n_clicks'),
+     Input(component_id='b4', component_property='n_clicks'),
+     Input(component_id='b5', component_property='n_clicks'),
+     Input(component_id='b6', component_property='n_clicks'),
+     Input(component_id='b7', component_property='n_clicks')],
+    [State(component_id='clicked-button', component_property='children')]
 )
 
 def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_clicks, b7_clicks, prv_clicks):
