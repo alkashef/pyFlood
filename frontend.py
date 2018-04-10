@@ -33,6 +33,8 @@ app.layout = html.Div([html.H1('pyFlood', style={'textAlign': 'left'}),
                                  html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 last:nan', id='clicked-button', style={'display': 'none'})])
                        ])
 
+app.title = 'pyFlood'
+
 @app.callback(
     Output(component_id='grid-component', component_property='figure'),
     [Input(component_id='clicked-button', component_property='children')]
