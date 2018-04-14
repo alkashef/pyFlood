@@ -3,6 +3,9 @@ import random as rn
 import numpy as np
 from plotly import graph_objs as go
 
+# game modules
+from colors import no_colors
+
 # ------------------------------------------------------------------------------
 
 def get_neighbours(grid, cell):
@@ -55,6 +58,12 @@ def flood_grid(grid, target_color, chosen_color, cell):
 
 # ------------------------------------------------------------------------------
 
+def stupid_bot(grid):
+    chosen_color = rn.randint(1, no_colors)
+    return chosen_color
+
+# ------------------------------------------------------------------------------
+
 def initialize_grid(size, no_colors):
     #rn.seed(4321)
     grid = np.zeros((size, size))
@@ -73,10 +82,16 @@ def reset(string):
 
 # ------------------------------------------------------------------------------
 
-def color_button(string):
-    if represents_int(string):
-        if int(string) < 7:
-            return True
+def is_color_button(string):
+    if represents_int(string) and int(string) < 7:
+        return True
+    return False
+
+# ------------------------------------------------------------------------------
+
+def is_bot_button(string):
+    if represents_int(string) and int(string) == 8:
+        return True
     return False
 
 # ------------------------------------------------------------------------------
@@ -150,3 +165,5 @@ def same_color(grid, chosen_color):
     if int(chosen_color) == grid[0, 0]:
         return True
     return False
+
+# ------------------------------------------------------------------------------

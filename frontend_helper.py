@@ -10,7 +10,7 @@ game_width = '400'
 def color_button_style(color):
     return {'width': '50',
             'height': '30',
-            'marginRight':'20',
+            'marginRight': '20',
             'marginTop': '20',
             'background-color': color}
 
@@ -26,18 +26,19 @@ def subtitle_style():
 
 def header_style():
     return {'textAlign': 'left'}
+
 # ------------------------------------------------------------------------------
 
 def counter_style():
     return {'font-size': '150%',
             'display': 'inline-block',
-            'vertical-align':'middle'}
+            'vertical-align': 'middle'}
 
 # ------------------------------------------------------------------------------
 
 def above_grid_style():
     return {'width': game_width,
-            'margin': '20px 0px 30px 0'}
+            'margin': '20px 0px 20px 0'}
 
 # ------------------------------------------------------------------------------
 
@@ -53,5 +54,21 @@ def reset_style():
 
 # ------------------------------------------------------------------------------
 
+def flood_style():
+    return {'width': '400',
+            'margin': '20px 0px 20px 0px'}
 
 
+# ------------------------------------------------------------------------------
+
+def bot_flood_style():
+    return {'width': '100',
+            'height': '30',
+            'color': 'white',
+            'background-color': 'black',
+            'margin': '0px 0px 0px 0px',
+            'font-size': '110%',
+            'display': 'inline-block',
+            'float': 'right'}
+
+# ------------------------------------------------------------------------------

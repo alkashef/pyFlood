@@ -12,14 +12,18 @@ from backend import start_game, \
                     flood_grid, \
                     plot_grid, \
                     reset, \
-                    color_button, \
-                    same_color
+                    is_color_button, \
+                    is_bot_button, \
+                    same_color, \
+                    stupid_bot
 from frontend_helper import color_button_style, \
                             reset_style, \
                             subtitle_style, \
                             counter_style, \
                             above_grid_style, \
                             header_style, \
+                            flood_style, \
+                            bot_flood_style, \
                             app_name, \
                             subtitle_text
 
@@ -28,28 +32,76 @@ from frontend_helper import color_button_style, \
 grid, figure = start_game(settings.grid_size, colors.no_colors, colors.color_map)
 initial_grid = grid
 step_counter = 0
+chosen_color = 0
+
+# ------------------------------------------------------------------------------
+
+def grid_div():
+    return html.Div([dcc.Graph(id='grid-component', figure=figure, config={'displayModeBar': False})])
+
+def header():
+    return html.H1('pyFlood', style=header_style())
+
+def subtitle():
+    return html.Div(subtitle_text, style=subtitle_style())
+
+def hidden_button():
+    return html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 b8:0 last:nan', id='clicked-button', style={'display': 'none'})
+
+def bot_flood_button(hide):
+    if hide == True:
+        return html.Button('bot flood', id='b8', n_clicks=0, style={'display': 'none'})
+    else:
+        return html.Button('bot flood', id='b8', n_clicks=0, style=bot_flood_style())
+
+def color_button(hide, color, id):
+    if hide == True:
+        return html.Button('', id=id, n_clicks=0, style={'display': 'none'})
+    else:
+        return html.Button('', id=id, n_clicks=0, style=color_button_style(colors.color_dict[color]))
+
+def counter():
+    return html.Div('', id='step-counter', style=counter_style())
+
+def reset_component():
+    return html.Button('Reset', id='b7', n_clicks=0, style=reset_style())
 
 # ------------------------------------------------------------------------------
 
 app = dash.Dash()
 
-app.layout = html.Div([html.H1('pyFlood', style=header_style()),
-                       html.Div(subtitle_text, style=subtitle_style()),
-                       html.Div([html.Div('', id='step-counter', style=counter_style()),
-                                 html.Button('Reset', id='b7', n_clicks=0, style=reset_style())],
-                                style=above_grid_style()),
-                       html.Div([dcc.Graph(id='grid-component', figure=figure, config={'displayModeBar': False})]),
-                       # To identify which button was clicked:
-                       # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
-                       # [maral] Mar 18, 2018 5:35 am
-                       html.Div([html.Button('', id='b1', n_clicks=0, style=color_button_style(colors.color_dict['navy'])),
-                                 html.Button('', id='b2', n_clicks=0, style=color_button_style(colors.color_dict['blue'])),
-                                 html.Button('', id='b3', n_clicks=0, style=color_button_style(colors.color_dict['green'])),
-                                 html.Button('', id='b4', n_clicks=0, style=color_button_style(colors.color_dict['red'])),
-                                 html.Button('', id='b5', n_clicks=0, style=color_button_style(colors.color_dict['orange'])),
-                                 html.Button('', id='b6', n_clicks=0, style=color_button_style(colors.color_dict['yellow']))]),
-                       html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 last:nan', id='clicked-button', style={'display': 'none'})
-                       ])
+if settings.mood == 'human':
+    app.layout = html.Div([header(),
+                           subtitle(),
+                           html.Div([counter(), reset_component()], style=above_grid_style()),
+                           grid_div(),
+                           # To identify which button was clicked:
+                           # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
+                           # [maral] Mar 18, 2018 5:35 am
+                           html.Div([color_button(False, 'navy',   'b1'),
+                                     color_button(False, 'blue',   'b2'),
+                                     color_button(False, 'green',  'b3'),
+                                     color_button(False, 'red',    'b4'),
+                                     color_button(False, 'orange', 'b5'),
+                                     color_button(False, 'yellow', 'b6')]),
+                           html.Div([bot_flood_button(hide=True)], style=flood_style()),
+                           hidden_button()
+                           ])
+
+if settings.mood == 'bot':
+    app.layout = html.Div([header(),
+                           subtitle(),
+                           html.Div([counter(), reset_component()], style=above_grid_style()),
+                           grid_div(),
+                           html.Div([color_button(True, '', 'b1'),
+                                     color_button(True, '', 'b2'),
+                                     color_button(True, '', 'b3'),
+                                     color_button(True, '', 'b4'),
+                                     color_button(True, '', 'b5'),
+                                     color_button(True, '', 'b6')]),
+                           html.Div([bot_flood_button(hide=False)], style=flood_style()),
+                           hidden_button()
+                           ])
 
 app.title = app_name
 
@@ -59,21 +111,25 @@ app.title = app_name
     Output(component_id='grid-component', component_property='figure'),
     [Input(component_id='clicked-button', component_property='children')]
 )
-
 def play(clicked):
 
     global grid
     global initial_grid
+    global chosen_color
 
     clicked_button = clicked[-1:]
 
     if reset(clicked_button):
         grid, dummy_fig = start_game(settings.grid_size, colors.no_colors, colors.color_map)
     else:
-        if color_button(clicked_button) and not game_over(grid):
-                grid = flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
+        if is_color_button(clicked_button) and not game_over(grid):
+            grid = flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
         else:
-            grid = initial_grid
+            if is_bot_button(clicked_button) and not game_over(grid):
+                chosen_color = stupid_bot(grid)
+                grid = flood_grid(grid, grid[0, 0], chosen_color, [0, 0])
+            else:
+                grid = initial_grid
 
     return plot_grid(grid, colors.color_map, colors.no_colors)
 
@@ -87,11 +143,11 @@ def play(clicked):
      Input(component_id='b4', component_property='n_clicks'),
      Input(component_id='b5', component_property='n_clicks'),
      Input(component_id='b6', component_property='n_clicks'),
-     Input(component_id='b7', component_property='n_clicks')],
+     Input(component_id='b7', component_property='n_clicks'),
+     Input(component_id='b8', component_property='n_clicks')],
     [State(component_id='clicked-button', component_property='children')]
 )
-
-def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_clicks, b7_clicks, prv_clicks):
+def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_clicks, b7_clicks, b8_clicks, prv_clicks):
     prv_clicks = dict([i.split(':') for i in prv_clicks.split(' ')])
     last_click = 'nan'
     if b1_clicks > int(prv_clicks['b1']):
@@ -108,14 +164,17 @@ def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_cl
         last_click = 'b6'
     elif b7_clicks > int(prv_clicks['b7']):
         last_click = 'b7'
-    cur_clicks = 'b1:{} b2:{} b3:{} b4:{} b5:{} b6:{} b7:{} last:{}'.format(b1_clicks,
-                                                                            b2_clicks,
-                                                                            b3_clicks,
-                                                                            b4_clicks,
-                                                                            b5_clicks,
-                                                                            b6_clicks,
-                                                                            b7_clicks,
-                                                                            last_click)
+    elif b8_clicks > int(prv_clicks['b8']):
+        last_click = 'b8'
+    cur_clicks = 'b1:{} b2:{} b3:{} b4:{} b5:{} b6:{} b7:{} b8:{} last:{}'.format(b1_clicks,
+                                                                                  b2_clicks,
+                                                                                  b3_clicks,
+                                                                                  b4_clicks,
+                                                                                  b5_clicks,
+                                                                                  b6_clicks,
+                                                                                  b7_clicks,
+                                                                                  b8_clicks,
+                                                                                  last_click)
     return cur_clicks
 
 # ------------------------------------------------------------------------------
@@ -124,17 +183,19 @@ def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_cl
     Output(component_id='step-counter', component_property='children'),
     [Input(component_id='clicked-button', component_property='children')]
 )
-
 def update_step_counter(clicked):
+#to-do: counter does not work properly in bot mood
     global step_counter
     global grid
+    global chosen_color
 
     clicked_button = clicked[-1:]
 
     if reset(clicked_button):
         step_counter = 0
     else:
-        if color_button(clicked_button) and not game_over(grid) and not same_color(grid, clicked_button):
+        if (is_color_button(clicked_button) and not game_over(grid) and not same_color(grid, clicked_button)) or \
+           (is_bot_button(clicked_button) and not game_over(grid) and not same_color(grid, chosen_color)):
                 step_counter += 1
 
     return step_counter
