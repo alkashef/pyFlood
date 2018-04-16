@@ -7,30 +7,16 @@ from dash.dependencies import Input, Output, State
 # game modules
 import settings
 import colors
-from backend import start_game, \
-                    game_over, \
-                    flood_grid, \
-                    plot_grid, \
-                    reset, \
-                    is_color_button, \
-                    is_bot_button, \
-                    same_color, \
-                    stupid_bot, \
-                    represents_int
-from frontend_helper import color_button_style, \
-                            reset_style, \
-                            subtitle_style, \
-                            counter_style, \
-                            above_grid_style, \
-                            header_style, \
-                            flood_style, \
-                            bot_flood_style, \
-                            app_name, \
-                            subtitle_text
+import backend as be
+import frontend_helper as feh
 
 # ------------------------------------------------------------------------------
 
-grid, figure = start_game(settings.grid_size, colors.no_colors, colors.color_map)
+grid_size = settings.grid_size
+no_colors = colors.no_colors
+color_map = colors.color_map
+
+grid, figure = be.start_game(grid_size, no_colors, color_map)
 initial_grid = grid
 step_counter = 0
 chosen_color = 0
@@ -41,10 +27,10 @@ def grid_div():
     return html.Div([dcc.Graph(id='grid-component', figure=figure, config={'displayModeBar': False})])
 
 def header():
-    return html.H1('pyFlood', style=header_style())
+    return html.H1('pyFlood', style=feh.header_style())
 
 def subtitle():
-    return html.Div(subtitle_text, style=subtitle_style())
+    return html.Div(feh.subtitle_text, style=feh.subtitle_style())
 
 def hidden_button():
     return html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 b8:0 last:nan', id='clicked-button', style={'display': 'none'})
@@ -53,19 +39,19 @@ def bot_flood_button(hide):
     if hide == True:
         return html.Button('bot flood', id='b8', n_clicks=0, style={'display': 'none'})
     else:
-        return html.Button('bot flood', id='b8', n_clicks=0, style=bot_flood_style())
+        return html.Button('bot flood', id='b8', n_clicks=0, style=feh.bot_flood_style())
 
 def color_button(hide, color, id):
     if hide == True:
         return html.Button('', id=id, n_clicks=0, style={'display': 'none'})
     else:
-        return html.Button('', id=id, n_clicks=0, style=color_button_style(colors.color_dict[color]))
+        return html.Button('', id=id, n_clicks=0, style=feh.color_button_style(colors.color_dict[color]))
 
 def counter():
-    return html.Div('', id='step-counter', style=counter_style())
+    return html.Div('', id='step-counter', style=feh.counter_style())
 
 def reset_component():
-    return html.Button('Reset', id='b7', n_clicks=0, style=reset_style())
+    return html.Button('Reset', id='b7', n_clicks=0, style=feh.reset_style())
 
 # ------------------------------------------------------------------------------
 
@@ -74,7 +60,7 @@ app = dash.Dash()
 if settings.mood == 'human':
     app.layout = html.Div([header(),
                            subtitle(),
-                           html.Div([counter(), reset_component()], style=above_grid_style()),
+                           html.Div([counter(), reset_component()], style=feh.above_grid_style()),
                            grid_div(),
                            # To identify which button was clicked:
                            # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
@@ -85,14 +71,14 @@ if settings.mood == 'human':
                                      color_button(False, 'red',    'b4'),
                                      color_button(False, 'orange', 'b5'),
                                      color_button(False, 'yellow', 'b6')]),
-                           html.Div([bot_flood_button(hide=True)], style=flood_style()),
+                           html.Div([bot_flood_button(hide=True)], style=feh.flood_style()),
                            hidden_button()
                            ])
 
 if settings.mood == 'bot':
     app.layout = html.Div([header(),
                            subtitle(),
-                           html.Div([counter(), reset_component()], style=above_grid_style()),
+                           html.Div([counter(), reset_component()], style=feh.above_grid_style()),
                            grid_div(),
                            html.Div([color_button(True, '', 'b1'),
                                      color_button(True, '', 'b2'),
@@ -100,11 +86,11 @@ if settings.mood == 'bot':
                                      color_button(True, '', 'b4'),
                                      color_button(True, '', 'b5'),
                                      color_button(True, '', 'b6')]),
-                           html.Div([bot_flood_button(hide=False)], style=flood_style()),
+                           html.Div([bot_flood_button(hide=False)], style=feh.flood_style()),
                            hidden_button()
                            ])
 
-app.title = app_name
+app.title = feh.app_name
 
 # ------------------------------------------------------------------------------
 
@@ -120,17 +106,17 @@ def play(clicked):
 
     clicked_button = clicked[-1:]
 
-    if not represents_int(clicked_button):
+    if not be.represents_int(clicked_button):
         grid = initial_grid
-    elif reset(clicked_button):
-        grid, dummy_fig = start_game(settings.grid_size, colors.no_colors, colors.color_map)
-    elif is_color_button(clicked_button) and not game_over(grid):
-        grid = flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
-    elif is_bot_button(clicked_button) and not game_over(grid):
-        chosen_color = stupid_bot(grid)
-        grid = flood_grid(grid, grid[0, 0], chosen_color, [0, 0])
+    elif be.reset(clicked_button):
+        grid, dummy_fig = be.start_game(grid_size, no_colors, color_map)
+    elif be.is_color_button(clicked_button) and not be.game_over(grid):
+        grid = be.flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
+    elif be.is_bot_button(clicked_button) and not be.game_over(grid):
+        chosen_color = be.stupid_bot(grid)
+        grid = be.flood_grid(grid, grid[0, 0], chosen_color, [0, 0])
 
-    return plot_grid(grid, colors.color_map, colors.no_colors)
+    return be.plot_grid(grid, color_map, no_colors)
 
 # ------------------------------------------------------------------------------
 
@@ -190,11 +176,11 @@ def update_step_counter(clicked):
 
     clicked_button = clicked[-1:]
 
-    if reset(clicked_button):
+    if be.reset(clicked_button):
         step_counter = 0
     else:
-        if (is_color_button(clicked_button) and not game_over(grid) and not same_color(grid, clicked_button)) or  \
-           (is_bot_button(clicked_button) and not game_over(grid)):
+        if (be.is_color_button(clicked_button) and not be.game_over(grid) and not be.same_color(grid, clicked_button)) or  \
+           (be.is_bot_button(clicked_button) and not be.game_over(grid)):
                 step_counter += 1
 
     return step_counter
