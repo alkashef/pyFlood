@@ -1,6 +1,5 @@
 # dash modules
 import dash
-import dash_core_components as dcc  # higher-level components
 import dash_html_components as html  # has a component for every HTML tag
 from dash.dependencies import Input, Output, State
 
@@ -23,71 +22,39 @@ chosen_color = 0
 
 # ------------------------------------------------------------------------------
 
-def grid_div():
-    return html.Div([dcc.Graph(id='grid-component', figure=figure, config={'displayModeBar': False})])
-
-def header():
-    return html.H1('pyFlood', style=feh.header_style())
-
-def subtitle():
-    return html.Div(feh.subtitle_text, style=feh.subtitle_style())
-
-def hidden_button():
-    return html.Div('b1:0 b2:0 b3:0 b4:0 b5:0 b6:0 b7:0 b8:0 last:nan', id='clicked-button', style={'display': 'none'})
-
-def bot_flood_button(hide):
-    if hide == True:
-        return html.Button('bot flood', id='b8', n_clicks=0, style={'display': 'none'})
-    else:
-        return html.Button('bot flood', id='b8', n_clicks=0, style=feh.bot_flood_style())
-
-def color_button(hide, color, id):
-    if hide == True:
-        return html.Button('', id=id, n_clicks=0, style={'display': 'none'})
-    else:
-        return html.Button('', id=id, n_clicks=0, style=feh.color_button_style(colors.color_dict[color]))
-
-def counter():
-    return html.Div('', id='step-counter', style=feh.counter_style())
-
-def reset_component():
-    return html.Button('Reset', id='b7', n_clicks=0, style=feh.reset_style())
-
-# ------------------------------------------------------------------------------
-
 app = dash.Dash()
 
 if settings.mood == 'human':
-    app.layout = html.Div([header(),
-                           subtitle(),
-                           html.Div([counter(), reset_component()], style=feh.above_grid_style()),
-                           grid_div(),
+    app.layout = html.Div([feh.header(),
+                           feh.subtitle(),
+                           html.Div([feh.counter(), feh.reset_component()], style=feh.above_grid_style()),
+                           feh.grid_div(figure),
                            # To identify which button was clicked:
                            # https://community.plot.ly/t/input-two-or-more-button-how-to-tell-which-button-is-pressed/5788/26
                            # [maral] Mar 18, 2018 5:35 am
-                           html.Div([color_button(False, 'navy',   'b1'),
-                                     color_button(False, 'blue',   'b2'),
-                                     color_button(False, 'green',  'b3'),
-                                     color_button(False, 'red',    'b4'),
-                                     color_button(False, 'orange', 'b5'),
-                                     color_button(False, 'yellow', 'b6')]),
-                           html.Div([bot_flood_button(hide=True)], style=feh.flood_style()),
-                           hidden_button()
+                           html.Div([feh.color_button(False, 'navy', 'b1'),
+                                     feh.color_button(False, 'blue', 'b2'),
+                                     feh.color_button(False, 'green', 'b3'),
+                                     feh.color_button(False, 'red', 'b4'),
+                                     feh.color_button(False, 'orange', 'b5'),
+                                     feh.color_button(False, 'yellow', 'b6')]),
+                           html.Div([feh.bot_flood_button(hide=True)], style=feh.flood_style()),
+                           feh.hidden_button()
                            ])
 
 if settings.mood == 'bot':
-    app.layout = html.Div([header(),
-                           subtitle(),
-                           html.Div([counter(), reset_component()], style=feh.above_grid_style()),
-                           grid_div(),
-                           html.Div([color_button(True, '', 'b1'),
-                                     color_button(True, '', 'b2'),
-                                     color_button(True, '', 'b3'),
-                                     color_button(True, '', 'b4'),
-                                     color_button(True, '', 'b5'),
-                                     color_button(True, '', 'b6')]),
-                           html.Div([bot_flood_button(hide=False)], style=feh.flood_style()),
-                           hidden_button()
+    app.layout = html.Div([feh.header(),
+                           feh.subtitle(),
+                           html.Div([feh.counter(), feh.reset_component()], style=feh.above_grid_style()),
+                           feh.grid_div(figure),
+                           html.Div([feh.color_button(True, '', 'b1'),
+                                     feh.color_button(True, '', 'b2'),
+                                     feh.color_button(True, '', 'b3'),
+                                     feh.color_button(True, '', 'b4'),
+                                     feh.color_button(True, '', 'b5'),
+                                     feh.color_button(True, '', 'b6')]),
+                           html.Div([feh.bot_flood_button(hide=False)], style=feh.flood_style()),
+                           feh.hidden_button()
                            ])
 
 app.title = feh.app_name
