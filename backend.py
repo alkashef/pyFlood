@@ -60,6 +60,8 @@ def flood_grid(grid, target_color, chosen_color, cell):
 
 def stupid_bot(grid):
     chosen_color = rn.randint(1, no_colors)
+    while(same_color(grid, chosen_color)):
+        chosen_color = rn.randint(1, no_colors)
     return chosen_color
 
 # ------------------------------------------------------------------------------

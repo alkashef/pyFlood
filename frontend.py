@@ -15,7 +15,8 @@ from backend import start_game, \
                     is_color_button, \
                     is_bot_button, \
                     same_color, \
-                    stupid_bot
+                    stupid_bot, \
+                    represents_int
 from frontend_helper import color_button_style, \
                             reset_style, \
                             subtitle_style, \
@@ -119,17 +120,15 @@ def play(clicked):
 
     clicked_button = clicked[-1:]
 
-    if reset(clicked_button):
+    if not represents_int(clicked_button):
+        grid = initial_grid
+    elif reset(clicked_button):
         grid, dummy_fig = start_game(settings.grid_size, colors.no_colors, colors.color_map)
-    else:
-        if is_color_button(clicked_button) and not game_over(grid):
-            grid = flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
-        else:
-            if is_bot_button(clicked_button) and not game_over(grid):
-                chosen_color = stupid_bot(grid)
-                grid = flood_grid(grid, grid[0, 0], chosen_color, [0, 0])
-            else:
-                grid = initial_grid
+    elif is_color_button(clicked_button) and not game_over(grid):
+        grid = flood_grid(grid, grid[0, 0], int(clicked_button), [0, 0])
+    elif is_bot_button(clicked_button) and not game_over(grid):
+        chosen_color = stupid_bot(grid)
+        grid = flood_grid(grid, grid[0, 0], chosen_color, [0, 0])
 
     return plot_grid(grid, colors.color_map, colors.no_colors)
 
@@ -184,7 +183,7 @@ def updated_clicked(b1_clicks, b2_clicks, b3_clicks, b4_clicks, b5_clicks, b6_cl
     [Input(component_id='clicked-button', component_property='children')]
 )
 def update_step_counter(clicked):
-#to-do: counter does not work properly in bot mood
+
     global step_counter
     global grid
     global chosen_color
@@ -194,8 +193,8 @@ def update_step_counter(clicked):
     if reset(clicked_button):
         step_counter = 0
     else:
-        if (is_color_button(clicked_button) and not game_over(grid) and not same_color(grid, clicked_button)) or \
-           (is_bot_button(clicked_button) and not game_over(grid) and not same_color(grid, chosen_color)):
+        if (is_color_button(clicked_button) and not game_over(grid) and not same_color(grid, clicked_button)) or  \
+           (is_bot_button(clicked_button) and not game_over(grid)):
                 step_counter += 1
 
     return step_counter
