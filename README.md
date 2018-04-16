@@ -44,10 +44,9 @@ The `play()` function holds the main game logic.
 
 # To Do
 
-- Implement a dummy automatic player (i.e. random color select).
+- Refactor the code (e.g. avoid global variables).
 - Implement an automatic player using reinforcement learning.
-- Implement an API for others to plug-in their automatic player.
-- Deploy the app (Dockers?) 
+- Implement a mechanism (API?) for others to plug-in their automatic player.
 
 # Contributors
 
