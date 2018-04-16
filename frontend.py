@@ -73,7 +73,7 @@ def play(clicked):
 
     clicked_button = clicked[-1:]
 
-    if not be.represents_int(clicked_button):
+    if not be.is_button(clicked_button):
         grid = initial_grid
     elif be.reset(clicked_button):
         grid, dummy_fig = be.start_game(grid_size, no_colors, color_map)

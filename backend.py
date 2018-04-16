@@ -77,7 +77,7 @@ def initialize_grid(size, no_colors):
 # ------------------------------------------------------------------------------
 
 def reset(string):
-    if represents_int(string):
+    if is_button(string):
         if int(string) == 7:
             return True
     return False
@@ -85,14 +85,14 @@ def reset(string):
 # ------------------------------------------------------------------------------
 
 def is_color_button(string):
-    if represents_int(string) and int(string) < 7:
+    if is_button(string) and int(string) < 7:
         return True
     return False
 
 # ------------------------------------------------------------------------------
 
 def is_bot_button(string):
-    if represents_int(string) and int(string) == 8:
+    if is_button(string) and int(string) == 8:
         return True
     return False
 
@@ -154,7 +154,7 @@ def start_game(grid_size, no_colors, color_map):
 
 # ------------------------------------------------------------------------------
 
-def represents_int(string):
+def is_button(string):
     try:
         int(string)
         return True
